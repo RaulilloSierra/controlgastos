@@ -1,7 +1,50 @@
-const BudgetForm = () => {
-  return (
-    <div>BudgetForm</div>
-  )
-}
+import { useState, ChangeEvent, useMemo, FormEvent } from "react";
+import { useBudget } from "../hooks/useBudget";
 
-export default BudgetForm
+const BudgetForm = () => {
+  const [budget, setBudget] = useState(0);
+
+  const { dispatch } = useBudget();
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setBudget(+value);
+  };
+
+  const isValid = useMemo(() => isNaN(budget) || budget <= 0, [budget]);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch({ type: "add-budget", payload: { budget } });
+  };
+
+  return (
+    <form className="space-y-5" onSubmit={handleSubmit}>
+      <div className="flex flex-col space-y-5">
+        <label
+          htmlFor="budget"
+          className="text-4xl text-sky-600 font-bold text-center"
+        >
+          Definir presupuesto
+        </label>
+        <input
+          id="budget"
+          type="number"
+          className="w-full bg-white border border-gray-200 p-2"
+          placeholder="Define tu presupuesto"
+          name="budget"
+          value={budget}
+          onChange={handleChange}
+        />
+      </div>
+      <input
+        type="submit"
+        value={"Definir presupuesto"}
+        className="bg-sky-600 hover:bg-sky-400 cursor-pointer w-full p-2 text-white font-black uppercase disabled:opacity-10 disabled:cursor-not-allowed"
+        disabled={isValid}
+      />
+    </form>
+  );
+};
+
+export default BudgetForm;
