@@ -1,14 +1,21 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useMemo, FormEvent } from "react";
 
 const BudgetForm = () => {
   const [budget, setBudget] = useState(0);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>)=>{
-    const { value } = e.target
-    setBudget(+value)
-  }
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setBudget(+value);
+  };
+
+  const isValid = useMemo(() => isNaN(budget) || budget <= 0, [budget]);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   return (
-    <form className="space-y-5">
+    <form className="space-y-5" onSubmit={handleSubmit}>
       <div className="flex flex-col space-y-5">
         <label
           htmlFor="budget"
@@ -29,7 +36,8 @@ const BudgetForm = () => {
       <input
         type="submit"
         value={"Definir presupuesto"}
-        className="bg-sky-600 hover:bg-sky-400 cursor-pointer w-full p-2 text-white font-black uppercase"
+        className="bg-sky-600 hover:bg-sky-400 cursor-pointer w-full p-2 text-white font-black uppercase disabled:opacity-10 disabled:cursor-not-allowed"
+        disabled={isValid}
       />
     </form>
   );
