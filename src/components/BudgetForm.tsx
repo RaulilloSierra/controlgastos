@@ -1,7 +1,10 @@
 import { useState, ChangeEvent, useMemo, FormEvent } from "react";
+import { useBudget } from "../hooks/useBudget";
 
 const BudgetForm = () => {
   const [budget, setBudget] = useState(0);
+
+  const { dispatch } = useBudget();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -12,6 +15,7 @@ const BudgetForm = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch({ type: "add-budget", payload: { budget } });
   };
 
   return (
