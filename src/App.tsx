@@ -3,6 +3,7 @@ import BudgetForm from "./components/BudgetForm.tsx";
 import { useBudget } from "./hooks/useBudget.ts";
 import BudgetTracker from "./components/BudgetTracker.tsx";
 import ExpenseModal from "./components/ExpenseModal.tsx";
+import ExpenseList from "./components/ExpenseList.tsx";
 
 const App = () => {
   const { state } = useBudget();
@@ -21,6 +22,7 @@ const App = () => {
       </div>
       {isValidBudget && (
         <main className="max-w-3xl mx-auto py-10">
+          <ExpenseList />
           <ExpenseModal />
         </main>
       )}
