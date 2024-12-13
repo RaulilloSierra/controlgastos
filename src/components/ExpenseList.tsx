@@ -4,9 +4,18 @@ import ExpenseDetail from "./ExpenseDetail.tsx";
 
 const ExpenseList = () => {
   const { state } = useBudget();
-  const isEmpty = useMemo(() => state.expenses.length === 0, [state.expenses]);
+
+  const filteredExpenses = state.currentCategory
+    ? state.expenses.filter((ex) => ex.category === state.currentCategory)
+    : state.expenses;
+
+  const isEmpty = useMemo(
+    () => filteredExpenses.length === 0,
+    [filteredExpenses]
+  );
+
   return (
-    <div className="mt-10">
+    <div className="mt-10 bg-white shadow-lg rounded-lg p-3">
       {isEmpty ? (
         <p className="text-gray-600 text-2xl font-bold">Sin gastos</p>
       ) : (
@@ -15,7 +24,7 @@ const ExpenseList = () => {
             Listado de gastos
           </p>
           <div className="space-y-2">
-            {state.expenses.map((expense) => (
+            {filteredExpenses.map((expense) => (
               <ExpenseDetail key={expense.id} expense={expense} />
             ))}
           </div>
