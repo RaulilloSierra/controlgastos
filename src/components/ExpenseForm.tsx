@@ -8,6 +8,8 @@ import ErrorMessage from "./ErrorMessage.tsx";
 import { useBudget } from "../hooks/useBudget.ts";
 
 const ExpenseForm = () => {
+  const { state, dispatch, remainingBudget } = useBudget();
+
   const [expense, setExpense] = useState<DraftExpense>({
     amount: 0,
     expenseName: "",
@@ -16,8 +18,7 @@ const ExpenseForm = () => {
   });
 
   const [error, setError] = useState("");
-
-  const { state, dispatch } = useBudget();
+  const [previousAmount, setPreviousAmount] = useState(0);
 
   useEffect(() => {
     if (state.editingId) {
@@ -25,6 +26,7 @@ const ExpenseForm = () => {
         (e) => e.id === state.editingId
       )[0];
       setExpense(editingExpense);
+      setPreviousAmount(editingExpense.amount);
     }
   }, [state.editingId]);
 
@@ -55,8 +57,13 @@ const ExpenseForm = () => {
       return;
     }
 
-    // Agregar o actualizar un gasto
+    // Validación para evitar sobrecosto
+    if (expense.amount - previousAmount > remainingBudget) {
+      setError("El gasto es mayor a la cantidad disponible");
+      return;
+    }
 
+    // Agregar o actualizar un gasto
     if (state.editingId) {
       dispatch({
         type: "update-expense",
