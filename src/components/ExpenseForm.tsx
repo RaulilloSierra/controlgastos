@@ -81,7 +81,7 @@ const ExpenseForm = () => {
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
       <legend className="uppecase text-center text-2xl font-black border-b-4 border-sky-500 py-2">
-        Nuevo Gasto
+        {state.editingId ? "Editar Gasto" : "Nuevo Gasto"}
       </legend>
       {error && <ErrorMessage>{error}</ErrorMessage>}
       <div className="flex flex-col gap-2">
@@ -148,7 +148,7 @@ const ExpenseForm = () => {
       <input
         type="submit"
         className="bg-sky-600 cursor-pointer w-full p-2 text-white uppercase font-bold rounded-lg"
-        value={"registrar gasto"}
+        value={state.editingId ? "Guardar cambios" : "Guardar gasto"}
       />
     </form>
   );
