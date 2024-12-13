@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useBudget } from "../hooks/useBudget";
 import ExpenseForm from "./ExpenseForm";
 
-export default function ExpenseModal() {
+const ExpenseModal = () => {
   const { state, dispatch } = useBudget();
 
   return (
@@ -54,4 +54,6 @@ export default function ExpenseModal() {
       </Transition>
     </>
   );
-}
+};
+
+export default ExpenseModal;
